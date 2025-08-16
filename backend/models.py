@@ -1,5 +1,6 @@
 from typing import List, Dict, Optional
 from pydantic import BaseModel
+from datetime import datetime
 
 class Lesson(BaseModel):
     """Represents a lesson within a course"""
@@ -20,3 +21,32 @@ class CourseChunk(BaseModel):
     course_title: str                   # Which course this chunk belongs to
     lesson_number: Optional[int] = None # Which lesson this chunk is from
     chunk_index: int                    # Position of this chunk in the document
+
+class User(BaseModel):
+    """Represents a user in the system"""
+    id: Optional[int] = None
+    username: str
+    email: str
+    hashed_password: str
+    is_active: bool = True
+    created_at: Optional[datetime] = None
+
+class UserCreate(BaseModel):
+    """Model for user registration"""
+    username: str
+    email: str
+    password: str
+
+class UserLogin(BaseModel):
+    """Model for user login"""
+    username: str
+    password: str
+
+class Token(BaseModel):
+    """JWT token response model"""
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    """Token payload data"""
+    username: Optional[str] = None
