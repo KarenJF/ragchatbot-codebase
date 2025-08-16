@@ -43,6 +43,9 @@ chmod +x run.sh
 
 # Manual start
 cd backend && uv run uvicorn app:app --reload --port 8000
+
+# Alternative entry point (simple test script)
+uv run main.py
 ```
 
 ### Package Management
@@ -61,6 +64,8 @@ Create `.env` file in root directory:
 ```
 ANTHROPIC_API_KEY=your_anthropic_api_key_here
 ```
+
+Note: The system includes authentication models (User, UserCreate, UserLogin, Token) with JWT and bcrypt dependencies, but authentication endpoints are not currently implemented in the API.
 
 ## Key Configuration
 
@@ -87,6 +92,10 @@ Configuration is centralized in `backend/config.py`:
 - **CORS Configuration**: Allows all origins for development (`allow_origins=["*"]`)
 - **Session Persistence**: Sessions created automatically if not provided
 - **Error Handling**: Comprehensive error handling with HTTP status codes
+- **Document Initialization**: System automatically loads documents from `docs/` folder on startup
+- **ChromaDB Storage**: Vector database stored in `backend/chroma_db/` directory
+- **Development Static Files**: Custom static file handler with no-cache headers for frontend development
+- **Tool Architecture**: Extensible tool system with abstract `Tool` base class for adding new search capabilities
 
 ## Frontend Integration
 
@@ -106,3 +115,17 @@ Key Python packages:
 - `sentence-transformers==5.0.0` - Embedding model
 - `python-multipart==0.0.20` - File upload support
 - `python-dotenv==1.1.1` - Environment variable loading
+- `python-jose[cryptography]>=3.5.0` - JWT token handling (authentication ready)
+- `passlib>=1.7.4` & `bcrypt>=4.3.0` - Password hashing (authentication ready)
+
+## API Endpoints
+
+### Core Endpoints
+- `POST /api/query` - Submit queries and receive AI-generated responses with sources
+  - Request: `{"query": "string", "session_id": "optional_string"}`
+  - Response: `{"answer": "string", "sources": ["string"], "session_id": "string"}`
+- `GET /api/courses` - Get course analytics and available course titles
+  - Response: `{"total_courses": int, "course_titles": ["string"]}`
+
+### Static Files
+- `/` - Serves frontend application from `frontend/` directory with HTML fallback
