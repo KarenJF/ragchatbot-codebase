@@ -58,6 +58,42 @@ uv sync
 uv add package_name
 ```
 
+### Code Quality & Development Tools
+
+The project uses several code quality tools configured in `pyproject.toml`:
+
+#### Code Formatting
+- **black**: Automatic code formatting with 88-character line length
+- **isort**: Import sorting with black-compatible profile
+
+#### Code Quality Checks  
+- **flake8**: Style guide enforcement and error checking
+- **mypy**: Static type checking with strict configuration
+
+#### Development Scripts
+
+```bash
+# Format all code (black + isort)
+./scripts/format.sh
+
+# Run basic linting checks (flake8 + format checks, no mypy)
+./scripts/lint-basic.sh
+
+# Run all linting checks (flake8 + mypy + format checks)
+./scripts/lint.sh
+
+# Complete quality workflow (format + basic lint)
+./scripts/quality.sh
+
+# Manual tool usage
+uv run black backend/ main.py        # Format code
+uv run isort backend/ main.py        # Sort imports
+uv run flake8 backend/ main.py       # Check style/errors
+uv run mypy backend/ main.py         # Type checking (strict)
+```
+
+**Note**: The codebase currently has mypy type checking issues. Use `./scripts/lint-basic.sh` for essential checks without strict typing, or `./scripts/lint.sh` for full type checking (will show errors that need gradual fixing).
+
 ### Environment Setup
 
 Create `.env` file in root directory:
@@ -117,6 +153,13 @@ Key Python packages:
 - `python-dotenv==1.1.1` - Environment variable loading
 - `python-jose[cryptography]>=3.5.0` - JWT token handling (authentication ready)
 - `passlib>=1.7.4` & `bcrypt>=4.3.0` - Password hashing (authentication ready)
+
+Development dependencies (dev group):
+- `black>=24.0.0` - Code formatting
+- `flake8>=7.0.0` - Linting and style checking
+- `isort>=5.13.0` - Import sorting
+- `mypy>=1.8.0` - Static type checking
+- `pytest>=8.4.1` - Testing framework
 
 ## API Endpoints
 
