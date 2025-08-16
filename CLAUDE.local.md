@@ -1,0 +1,2 @@
+- don't run the server using ./run.sh I will start it myself
+- I already running the application. no need to launch it again
